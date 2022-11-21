@@ -1,0 +1,64 @@
+---
+title: "The conumee summaryplot extension vignette"
+author: "Samir Jabari (Universitätsklinikum Erlangen, department of Neuropathology, Erlangen, Germany)"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    number_sections: true
+bibliography: conumee.bib
+csl: biomed-central.csl
+vignette: >
+  %\VignetteIndexEntry{conumee}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
+# load RGset #
+RGset<-readRDS('path/to/RGset.rds')
+### or use an Mset instead ###
+
+# process to Mset #
+Mset<-preprocessIllumina(RGset)
+
+# load conumee package and load via CNV.load method #
+library(conumee)
+Data.data<- CNV.load(Mset)
+
+# create annotation object; not complete and non working example below!! --> for reference and help read conumee vignette #
+anno <- CNV.create_anno(array_type = array_type, detail_regions = detail_regions)
+
+
+# fetch controls from your Data #
+Data.controls<- grep( 'Control', names(Data.data))
+
+# read in phenosheet of samples; an identifier column mapping CNV data to phenosheet (named ID here ) should be specified #
+test_pheno=read.csv(file ='../test_pheno.csv')
+keep <- match(test_pheno$ID, names(Data.data))
+Data.data_test<-Data.data[c(keep)]
+
+
+
+test_batch<-CNV.batch_processor(object=Data.data_test,
+                                 pheno=test_pheno,
+                                 labels='labels',
+                                 interest_groups=NULL,
+                                 identifier='ID',
+                                 controls=c('Control'),
+                                 anno= anno,
+                                 summary_plots=TRUE,
+                                 sample_plots=TRUE,
+                                 chr = "all",
+                                 chrX = TRUE,
+                                 chrY = TRUE,
+                                 centromere = TRUE,
+                                 main = NULL,
+                                 ylim = c(-1, 1),
+                                 set_par = TRUE,
+                                 save=TRUE,
+                                 path="Path/to/savings")
+
+## Function to process CNV.data of the conumee package in batches.
+## CNV objects will be processed by single sample processing and the possibility to
+## perform summary plots of specified groups of interest.
