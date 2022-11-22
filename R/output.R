@@ -428,3 +428,142 @@ setMethod("CNV.write", signature(object = "CNV.analysis"), function(object,
         write.table(x, file = file, quote = FALSE, sep = "\t", row.names = FALSE)
     }
 }) 
+    
+    
+#' CNV.summaryplot
+#' @description Create CNV summary plots for Samples already processed with CNV.segment or via CNV.summaryanalysis_processor.
+#' @param object \code{CNV.summaryanalysis} object.
+#' @param summaryanalysis CNV.summaryanalysis object as returned from CNV.processsummary function i.e.
+#' @param intensity_vals. intensityvalues for the groups of interest specified as matrices as lists.
+#' @param cnv_seg_data CNV.segment sample data as list grouped by groups of interest.
+#' @param gl_freqs gl_frequency objects of the DNAcopy package for selected groups as lists.
+#' @param chr = "all", character vector. Which chromomsomes to plot. Defaults to 'all'.
+#' @param chrX = TRUE, logical. Plot values for chrX? Defaults to TRUE. Set CNV.create_anno(chrXY =FALSE)  if chrX and Y should not be included at all.
+#' @param chrY = TRUE,  logical. Plot values for chrY? Defaults to TRUE
+#' @param centromere = TRUE, logical. Show dashed lines at centromeres? Defaults to TRUE.
+#' @param main = NULL, character. Title of the plot. Defaults to interest groups names.
+#' @param ylim = c(-1, 1) numeric vector. The y limits of the plot. Defaults to c(-1, 1).
+#' @param set_par logical. Use recommended graphical parameters for \code{oma} and \code{mar}? Defaults to \code{TRUE}. Original parameters are restored afterwards.
+#' @paramsave= TRUE, logical. whether to save to path or not
+#' @param path= NULL character. path to savings without trailing / !
+#' @return \code{NULL}.
+#' @details This method provides the functionality for generating summary CNV plots of specified interest groups. On the y-axis gains and losses are plotted according to group frequency. See parameters for more information.
+#' @examples
+#' # see CNV.summaryanalisys for an example
+#' @author Samir Jabari\email{samir.jabari@@fau.de}
+#' @export
+setGeneric("CNV.summaryplot", function(object, ...) {
+    standardGeneric("CNV.summaryplot")
+})
+
+#' @rdname CNV.summaryplot
+setMethod("CNV.summaryplot", signature(object = "CNV.summaryanalysis"), function(object = NULL,
+                      chr = "all",
+                      chrX = TRUE,
+                      chrY = TRUE,
+                      centromere = TRUE,
+                      main = NULL,
+                      ylim = c(-1, 1),
+                      set_par = TRUE,
+                      save= TRUE,
+                      path= NULL) {
+
+print('starting')
+
+if (save){
+    if (is.null(path)){
+   stop('You need to specify a path' )
+   }
+else {
+    dir.create(path, recursive=TRUE, showWarnings = FALSE)
+    }
+}
+
+if (is.null(object)){
+
+        stop('Please provide a CNV.summaryanalysis object' )
+
+
+}
+
+
+if (!is.null(object)){
+intensity_vals=object@intensity_vals
+cnv_seg_data=object@cnv_seg_data
+gl_freqs=object@gl_freqs
+}
+
+
+if (set_par) {
+     mfrow_original <- par()$mfrow
+     mar_original <- par()$mar
+     oma_original <- par()$oma
+     par(mfrow = c(1, 1), mar = c(4, 4, 4, 4), oma = c(0, 0, 0, 0))
+ }
+
+print(paste('There are',length(names(intensity_vals)), 'summaryanalysis that are going to be processed') )
+
+for (i in seq_along(cnv_seg_data)){
+
+       print(paste("Processing summaryanalysis: ", names(intensity_vals[i])))
+
+       main <- names(intensity_vals[i])
+
+       if (chr[1] == "all") {
+           chr <- cnv_seg_data[[i]][[1]]@anno@genome$chr
+       } else {
+           chr <- intersect(chr, cnv_seg_data[[i]][[1]]@anno@genome$chr)
+       }
+
+       chr.cumsum0 <- .cumsum0(cnv_seg_data[[i]][[1]]@anno@genome[chr, "size"], n = chr)
+       if (!chrX & is.element("chrX", names(chr.cumsum0)))
+           chr.cumsum0["chrX"] <- NA
+       if (!chrY & is.element("chrY", names(chr.cumsum0)))
+           chr.cumsum0["chrY"] <- NA
+
+
+      if (save)  dir.create(file.path(path,main), recursive=TRUE, showWarnings = FALSE)
+      if (save)  png(file=file.path(path,main,paste(main,".png")),width = 1920, height = 480)
+
+
+
+       plot(NA, xlim = c(0, sum(as.numeric(cnv_seg_data[[i]][[1]]@anno@genome[chr, "size"])) -
+           0), ylim = ylim, xaxs = "i", xaxt = "n", yaxt = "n", xlab = NA,
+           ylab = NA, main = main)
+
+       abline(v = .cumsum0(cnv_seg_data[[i]][[1]]@anno@genome[chr, "size"], right = TRUE),
+           col = "grey")
+       if (centromere)
+           abline(v = .cumsum0(cnv_seg_data[[i]][[1]]@anno@genome[chr, "size"]) + cnv_seg_data[[i]][[1]]@anno@genome[chr,
+               "pq"], col = "grey", lty = 2)
+       axis(1, at = .cumsum0(cnv_seg_data[[i]][[1]]@anno@genome[chr, "size"]) + cnv_seg_data[[i]][[1]]@anno@genome[chr,
+           "size"]/2, labels = cnv_seg_data[[i]][[1]]@anno@genome[chr, "chr"], las = 2)
+
+
+       if (all(ylim == c(-1, 1))) {
+           axis(2, at = round(seq(-1, 1, 0.2), 1), las = 2)
+       } else {
+           axis(2, las = 2)
+       }
+
+
+       y2 = gl_freqs[[names(gl_freqs[i])]]$gain
+
+       y1 = gl_freqs[[names(gl_freqs[i])]]$loss
+
+
+    lines(chr.cumsum0[as.vector(seqnames(cnv_seg_data[[i]][[1]]@anno@bins))] + values(cnv_seg_data[[i]][[1]]@anno@bins)$midpoint,
+           y1, type = "h", pch = 16, cex = 0.75, col = 'red')
+
+    lines(chr.cumsum0[as.vector(seqnames(cnv_seg_data[[i]][[1]]@anno@bins))] + values(cnv_seg_data[[i]][[1]]@anno@bins)$midpoint,
+               y2, type = "h", pch = 16, cex = 0.75, col = 'green')
+
+    if (set_par)
+       par(mfrow = mfrow_original, mar = mar_original, oma = oma_original)
+
+    if (save)
+     dev.off()
+      }
+
+
+    })
