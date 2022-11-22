@@ -429,7 +429,7 @@ setMethod("CNV.write", signature(object = "CNV.analysis"), function(object,
     }
 }) 
     
-
+    
 #' CNV.summaryplot
 #' @description Create CNV summary plots for Samples already processed with CNV.segment or via CNV.summaryanalysis_processor.
 #' @param object \code{CNV.summaryanalysis} object.
@@ -564,5 +564,6 @@ for (i in seq_along(cnv_seg_data)){
     if (save)
      dev.off()
       }
+
 
     })
