@@ -4,9 +4,15 @@
 \alias{CNV.create_anno}
 \title{CNV.create_anno}
 \usage{
-CNV.create_anno(bin_minprobes = 15, bin_minsize = 50000,
-  bin_maxsize = 5e+06, array_type = "450k", chrXY = FALSE,
-  exclude_regions = NULL, detail_regions = NULL)
+CNV.create_anno(
+  bin_minprobes = 15,
+  bin_minsize = 50000,
+  bin_maxsize = 5e+06,
+  array_type = "450k",
+  chrXY = FALSE,
+  exclude_regions = NULL,
+  detail_regions = NULL
+)
 }
 \arguments{
 \item{bin_minprobes}{numeric. Minimum number of probes per bin. Bins are interatively merged with neighboring bin until minimum number is reached.}
@@ -40,4 +46,3 @@ anno
 \author{
 Volker Hovestadt \email{conumee@hovestadt.bio}
 }
-

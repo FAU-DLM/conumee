@@ -311,7 +311,7 @@ setMethod("CNV.segment", signature(object = "CNV.analysis"), function(object,
 #' @param main = NULL, character. Title of the plot. Defaults to interest groups names.
 #' @param ylim = c(-1, 1) numeric vector. The y limits of the plot. Defaults to c(-1, 1).
 #' @param set_par logical. Use recommended graphical parameters for \code{oma} and \code{mar}? Defaults to \code{TRUE}. Original parameters are restored afterwards.
-#' @paramsave= TRUE, logical. whether to save to path or not
+#' @param save= TRUE, logical. whether to save to path or not
 #' @param path= NULL character. path to savings without trailing / !
 #' @return \code{CNV.summaryanalysis} object.
 #' @details This method generates a CNV.summaryanalyis object needed to generate summary plots with CNV.summaryplot of specified interest groups. On the y-axis gains and losses are plotted according to group frequency. See parameters for more information.
@@ -489,7 +489,7 @@ gl_freq_list<-list()
 cnvss_list<-list()
 
 for (r in seq_along(interest_groups)) {
-      
+
       print(interest_groups[[r]])
 
       elenames<-list()
@@ -563,4 +563,4 @@ CNV.summaryplot(object=object,
 
 return (object)
 
-}
+})
