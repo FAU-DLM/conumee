@@ -43,4 +43,4 @@ Collate:
 biocViews: CopyNumberVariation, DNAMethylation, MethylationArray, Microarray,
     Normalization, Preprocessing, QualityControl, Software
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 7.2.0
