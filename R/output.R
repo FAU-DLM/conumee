@@ -431,7 +431,7 @@ setMethod("CNV.write", signature(object = "CNV.analysis"), function(object,
 
 
 #' CNV.summaryplot
-#' @description Create CNV summary plots for Samples already processed with CNV.segment or via CNV.summaryanalysis_processor.
+#' @description Create CNV summary plots for Samples already processed with CNV.segment or via CNV.processsummary.
 #' @param object \code{CNV.summaryanalysis} object.
 #' @param summaryanalysis CNV.summaryanalysis object as returned from CNV.processsummary function i.e.
 #' @param intensity_vals. intensityvalues for the groups of interest specified as matrices as lists.

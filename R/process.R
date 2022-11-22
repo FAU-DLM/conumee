@@ -289,7 +289,7 @@ setMethod("CNV.segment", signature(object = "CNV.analysis"), function(object,
 
 
 #' CNV.processsummary
-#' @description Create CNV summary plots for Samples already processed with CNV.segment or via CNV.summaryanalysis_processor.
+#' @description Create a CNV.summaryanalysis object containing grouped cnv analysis data with option of summaryplotting or single sample analysis and plots.
 #' @param object \code{CNV.data} object.
 #' @param pheno=NULL, data.frame phenosheet containing info about samples with columns as seen in other parameters
 #' @param labels=NULL, charcter. labels column in pheno sheet

@@ -57,7 +57,7 @@ CNV.processsummary(object, ...)
 \code{CNV.summaryanalysis} object.
 }
 \description{
-Create CNV summary plots for Samples already processed with CNV.segment or via CNV.summaryanalysis_processor.
+Create a CNV.summaryanalysis object containing grouped cnv analysis data with option of summaryplotting or single sample analysis and plots.
 }
 \details{
 This method generates a CNV.summaryanalyis object needed to generate summary plots with CNV.summaryplot of specified interest groups. On the y-axis gains and losses are plotted according to group frequency. See parameters for more information.

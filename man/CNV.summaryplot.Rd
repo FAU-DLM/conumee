@@ -53,7 +53,7 @@ CNV.summaryplot(object, ...)
 \code{NULL}.
 }
 \description{
-Create CNV summary plots for Samples already processed with CNV.segment or via CNV.summaryanalysis_processor.
+Create CNV summary plots for Samples already processed with CNV.segment or via CNV.processsummary.
 }
 \details{
 This method provides the functionality for generating summary CNV plots of specified interest groups. On the y-axis gains and losses are plotted according to group frequency. See parameters for more information.
