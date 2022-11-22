@@ -565,5 +565,4 @@ for (i in seq_along(cnv_seg_data)){
      dev.off()
       }
 
-
     })
