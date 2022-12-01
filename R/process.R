@@ -287,6 +287,8 @@ setMethod("CNV.segment", signature(object = "CNV.analysis"), function(object,
     return(object)
 })
 
+#' @importFrom gtools mixedorder
+NULL
 
 #' CNV.processsummary
 #' @description Create a CNV.summaryanalysis object containing grouped cnv analysis data with option of summaryplotting or single sample analysis and plots.
@@ -517,7 +519,7 @@ for (r in seq_along(interest_groups)) {
 
 
       glfreq<-DNAcopy::glFrequency(x2, cutoff)
-      glfreq<-glfreq[gtools::mixedorder(glfreq$chrom), ]
+      glfreq<-glfreq[mixedorder(glfreq$chrom), ]
 
       cnvss_list[[r]] <- el_cnv_list
       cnv_val_list[[r]] <- x2 #cnv_vals
