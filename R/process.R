@@ -407,7 +407,7 @@ object.groups<-object[c(keep),]
 for (i in seq_along(names(object.groups))){
 
         print (i)
-
+        fitting<-CNV.fit(object.groups[i], object.controls, anno)
         raw_name<-names(fitting)
         proc_name<-gsub("[^A-Za-z0-9]", "_", raw_name)
         print(proc_name)
