@@ -517,7 +517,7 @@ for (r in seq_along(interest_groups)) {
 
 
       glfreq<-DNAcopy::glFrequency(x2, cutoff)
-      glfreq<-glfreq[mixedorder(glfreq$chrom), ]
+      glfreq<-glfreq[gtools::mixedorder(glfreq$chrom), ]
 
       cnvss_list[[r]] <- el_cnv_list
       cnv_val_list[[r]] <- x2 #cnv_vals

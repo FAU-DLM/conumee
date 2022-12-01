@@ -16,7 +16,8 @@ Imports:
     rtracklayer,
     GenomicRanges,
     IRanges,
-    GenomeInfoDb
+    GenomeInfoDb,
+    gtools
 Depends:
     R (>= 3.0),
     minfi,
