@@ -405,6 +405,19 @@ keep <- match(groups[[identifier]], names(object) )
 
 object.groups<-object[c(keep),]
 
+r <- cor(object.groups@intensity[names(anno@probes) , ], object.controls@intensity[names(anno@probes) , ])[1, ] < 0.99
+rm_list<-list()
+for (d in seq_along(r)){
+          if(is.na(r[d])){
+                rm_list[d]<-FALSE
+          }
+          else{
+                rm_list[d]<-TRUE
+          }
+}
+
+object.controls<- object.controls[unlist(rm_list)]    
+
 
 for (i in seq_along(names(object.groups))){
 
